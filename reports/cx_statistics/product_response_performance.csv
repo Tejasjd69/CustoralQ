@@ -1,0 +1,15 @@
+product,complaints,timely_responses,timely_rate_pct,not_timely_rate_pct
+Student loan,987,617,62.51266464032421,37.48733535967579
+Debt or credit management,283,257,90.81272084805654,9.187279151943457
+Mortgage,1975,1850,93.67088607594937,6.329113924050631
+"Payday loan, title loan, personal loan, or advance loan",1011,951,94.06528189910979,5.934718100890208
+Prepaid card,328,309,94.20731707317073,5.792682926829272
+"Money transfer, virtual currency, or money service",2226,2126,95.50763701707098,4.4923629829290235
+Debt collection,10309,9924,96.26539916577748,3.734600834222519
+Vehicle loan or lease,1353,1317,97.33924611973393,2.6607538802660713
+Credit card,4841,4755,98.22350753976451,1.7764924602354881
+Checking or savings account,5312,5269,99.19051204819277,0.8094879518072275
+Credit reporting or other personal consumer reports,1340,1330,99.25373134328358,0.7462686567164241
+Credit card or prepaid card,2,2,100.0,0.0
+"Credit reporting, credit repair services, or other personal consumer reports",26,26,100.0,0.0
+Money transfers,1,1,100.0,0.0
