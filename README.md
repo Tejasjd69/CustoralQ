@@ -139,8 +139,7 @@ custoraiq/
 
 - Historical dataset (Dec 2009–Dec 2011); would need recalibration on current data for production use.
 - Churn is an engineered label (purchase inactivity), not ground truth — seasonal effects could create false positives.
-- No demographic or campaign-response data available.
-- Portfolio/educational project — not connected to live data or production systems.
+
 
 ## Author
 
