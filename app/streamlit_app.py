@@ -1880,8 +1880,6 @@ st.markdown(f"""
         <a class="footer-link" href="{DEV_LINKEDIN}" target="_blank">LinkedIn</a>
         <a class="footer-link" href="{DEV_PORTFOLIO}" target="_blank">Portfolio</a>
     </div>
-    <div class="footer-note">
-        Built and maintained by {DEV_NAME}. Portfolio project for demonstration purposes.
-    </div>
+  
 </div>
 """, unsafe_allow_html=True)
