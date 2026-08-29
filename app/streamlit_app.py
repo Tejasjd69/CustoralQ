@@ -1,5 +1,5 @@
 """
-CustoraIQ - Customer & CX Intelligence Platform  -  Streamlit Dashboard
+CustoraIQ - Customer & CX Intelligence Platform - Streamlit Dashboard
 Step 12: Interactive business dashboard powered by customer_360.parquet
 
 Developer: Tejas Jadhav
@@ -8,7 +8,7 @@ GitHub: https://github.com/tejasjd69
 LinkedIn: https://linkedin.com/in/tejas-jadhav
 """
 
-# ------------------------------------------------------------------------------
+# -- Developer contact info (single source of truth) --------------------------
 DEV_NAME = "Tejas Jadhav"
 DEV_ROLE = "Data Analyst | Business Analytics | Financial Data | AI Applications"
 DEV_GITHUB = "https://github.com/tejasjd69"
@@ -22,21 +22,21 @@ import plotly.graph_objects as go
 import streamlit as st
 from pathlib import Path
 
-# ------------------------------------------------------------------------------
+# -- Page config ---------------------------------------------------------------
 st.set_page_config(
     page_title="CustoraIQ",
-    page_icon="",
+    page_icon="\U0001F4CA",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ------------------------------------------------------------------------------
+# -- CSS -----------------------------------------------------------------------
 st.markdown("""
 <style>
     /* Global font */
     html, body, [class*="css"] { font-family: 'Inter', 'Segoe UI', sans-serif; }
 
-    /* a"a" Header card a"a" */
+    /* -- Header card -- */
     .header-card {
         background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%);
         border-radius: 12px;
@@ -87,7 +87,7 @@ st.markdown("""
         margin-top: 4px;
     }
 
-    /* a"a" Section heading a"a" */
+    /* -- Section heading -- */
     .section-heading {
         font-size: 1.05rem;
         font-weight: 600;
@@ -97,7 +97,7 @@ st.markdown("""
         margin: 1.2rem 0 0.6rem 0;
     }
 
-    /* a"a" KPI card a"a" */
+    /* -- KPI card -- */
     .metric-card {
         background: #ffffff;
         border: 1px solid #e5e7eb;
@@ -126,7 +126,7 @@ st.markdown("""
         margin-top: 4px;
     }
 
-    /* a"a" Insight / alert boxes a"a" */
+    /* -- Insight / alert boxes -- */
     .insight-box {
         background: #eff6ff;
         border: 1px solid #bfdbfe;
@@ -165,7 +165,7 @@ st.markdown("""
         color: #991b1b;
     }
 
-    /* a"a" Contact cards a"a" */
+    /* -- Contact cards -- */
     .contact-card {
         background: #ffffff;
         border: 1px solid #e5e7eb;
@@ -192,7 +192,7 @@ st.markdown("""
     }
     .contact-card-link:hover { text-decoration: underline; }
 
-    /* a"a" Footer a"a" */
+    /* -- Footer -- */
     .site-footer {
         margin-top: 48px;
         padding: 24px 0 12px 0;
@@ -225,7 +225,7 @@ st.markdown("""
         line-height: 1.5;
     }
 
-    /* a"a" Sidebar contact a"a" */
+    /* -- Sidebar contact -- */
     .sidebar-contact {
         background: #f8fafc;
         border: 1px solid #e2e8f0;
@@ -268,7 +268,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ------------------------------------------------------------------------------
+# -- Constants -----------------------------------------------------------------
 ROOT = Path(__file__).parent.parent
 
 HEALTH_TIER_ORDER  = ["Excellent", "Healthy", "Watchlist", "At Risk", "Critical"]
@@ -297,15 +297,15 @@ PRIO_COLORS = {
 
 PLOTLY_TEMPLATE = "plotly_white"
 
-# ------------------------------------------------------------------------------
+# -- Formatting helpers --------------------------------------------------------
 def format_currency(value):
     if pd.isna(value):
         return "N/A"
     if value >= 1_000_000:
-        return f"GBP {value/1_000_000:.2f}M"
+        return f"\u00a3{value/1_000_000:.2f}M"
     if value >= 1_000:
-        return f"GBP {value/1_000:.1f}K"
-    return f"GBP {value:,.2f}"
+        return f"\u00a3{value/1_000:.1f}K"
+    return f"\u00a3{value:,.2f}"
 
 def format_percent(value):
     if pd.isna(value):
@@ -331,7 +331,7 @@ def kpi_card(label, value, delta=None):
     </div>
     """
 
-# ------------------------------------------------------------------------------
+# -- Data loading --------------------------------------------------------------
 @st.cache_data
 def load_customer_360():
     path = ROOT / "data/processed/customer_360.parquet"
@@ -371,7 +371,7 @@ def load_model_metrics():
         return pd.read_csv(csv_path)
     return None
 
-# ------------------------------------------------------------------------------
+# -- Load data -----------------------------------------------------------------
 df_all, load_error = load_customer_360()
 
 if load_error:
@@ -381,16 +381,16 @@ if load_error:
 txn_df = load_transactions()
 feat_imp = load_feature_importance()
 
-# ------------------------------------------------------------------------------
+# -- Header --------------------------------------------------------------------
 st.markdown(f"""
 <div class="header-card">
-    <div class="header-title"> CustoraIQ - Customer & CX Intelligence Platform</div>
+    <div class="header-title">\U0001F4CA CustoraIQ \u2014 Customer &amp; CX Intelligence Platform</div>
     <div class="header-subtitle">
-        Customer Segmentation &nbsp; | &nbsp; Churn Risk &nbsp; | &nbsp;
-        Health Scoring &nbsp; | &nbsp; Revenue Action Planning
+        Customer Segmentation &nbsp;\u00b7&nbsp; Churn Risk &nbsp;\u00b7&nbsp;
+        Health Scoring &nbsp;\u00b7&nbsp; Revenue Action Planning
     </div>
     <div class="header-owner">
-        Built by <strong>{DEV_NAME}</strong> &nbsp; - &nbsp; {DEV_ROLE}
+        Built by <strong>{DEV_NAME}</strong> &nbsp;\u2014&nbsp; {DEV_ROLE}
     </div>
     <div class="header-links">
         <a class="header-link" href="{DEV_GITHUB}" target="_blank">GitHub</a>
@@ -398,14 +398,14 @@ st.markdown(f"""
         <a class="header-link" href="{DEV_PORTFOLIO}" target="_blank">Portfolio</a>
     </div>
     <div class="header-currency-note">
-         All monetary values are shown in <strong>GBP (GBP )</strong>, based on the original
-        UK retailer transaction dataset (UCI Online Retail II, 2009-2011).
-        Country filter applies to customer location only  -  currency symbol never changes.
+        \U0001F4B7 All monetary values are shown in <strong>GBP (\u00a3)</strong>, based on the original
+        UK retailer transaction dataset (UCI Online Retail II, 2009\u20132011).
+        Country filter applies to customer location only \u2014 currency symbol never changes.
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ------------------------------------------------------------------------------
+# -- Sidebar filters -----------------------------------------------------------
 with st.sidebar:
     st.markdown("### Filters")
     st.caption("Leave a filter empty to include all options. Expand to narrow your selection.")
@@ -415,7 +415,7 @@ with st.sidebar:
         <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;
                     padding:9px 12px;margin:6px 0 10px 0;font-size:0.78rem;color:#166534;
                     line-height:1.45">
-        <b>Currency note:</b> All monetary values are shown in <b>GBP (GBP )</b>, based on the
+        <b>Currency note:</b> All monetary values are shown in <b>GBP (\u00a3)</b>, based on the
         original UK retailer transaction dataset. Country filters customer location only.
         </div>
         """,
@@ -429,7 +429,7 @@ with st.sidebar:
     all_value   = sorted(df_all["customer_value_tier"].dropna().unique().tolist())
     all_country = sorted(df_all["country_mode"].dropna().unique().tolist())
 
-    # Reset button  -  clears all filter widget state
+    # Reset button \u2014 clears all filter widget state
     if st.button("Reset All Filters", use_container_width=True):
         for k in list(st.session_state.keys()):
             if k.startswith("flt_"):
@@ -497,10 +497,10 @@ with st.sidebar:
     rev_min = float(df_all["total_revenue"].min())
     rev_max = float(df_all["total_revenue"].max())
     rev_range = st.slider(
-        "Revenue Range (GBP )",
+        "Revenue Range (\u00a3)",
         min_value=rev_min, max_value=rev_max,
         value=(rev_min, rev_max),
-        format="GBP %.0f",
+        format="\u00a3%.0f",
         key="flt_rev",
     )
 
@@ -513,7 +513,7 @@ with st.sidebar:
         key="flt_cp",
     )
 
-# ------------------------------------------------------------------------------
+# -- Apply filters -------------------------------------------------------------
 df = df_all.copy()
 
 if sel_health:  df = df[df["health_tier"].isin(sel_health)]
@@ -552,7 +552,7 @@ with st.sidebar:
     st.markdown(f"""
     <div class="sidebar-contact">
         <div class="sidebar-contact-name">{DEV_NAME}</div>
-        <div class="sidebar-contact-role">Data Analyst  |  Business Analytics  |  ML  |  Data Engineering</div>
+        <div class="sidebar-contact-role">Data Analyst \u00b7 Business Analytics \u00b7 ML \u00b7 Data Engineering</div>
         <div class="sidebar-contact-links">
             <a class="sidebar-link" href="{DEV_LINKEDIN}" target="_blank">LinkedIn</a>
             <a class="sidebar-link" href="{DEV_GITHUB}" target="_blank">GitHub</a>
@@ -561,20 +561,20 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-# ------------------------------------------------------------------------------
+# -- Tabs ----------------------------------------------------------------------
 tabs = st.tabs([
-    "Executive Overview",
-    "Customer Segments",
-    "Churn Risk & Retention",
-    "Customer Lookup",
-    "Revenue & Products",
-    "Action Plan",
-    "CX Intelligence",
-    "About Project"
+    "\U0001F4C8 Executive Overview",
+    "\U0001F465 Customer Segments",
+    "\u26a0\ufe0f Churn Risk & Retention",
+    "\U0001F50D Customer Lookup",
+    "\U0001F4B0 Revenue & Products",
+    "\U0001F3AF Action Plan",
+    "\U0001F4AC CX Intelligence",
+    "\u2139\ufe0f About Project",
 ])
-# ------------------------------------------------------------------------------
-# TAB 1  -  EXECUTIVE OVERVIEW
-# ------------------------------------------------------------------------------
+# ============================================================================
+# TAB 1 \u2014 EXECUTIVE OVERVIEW
+# ============================================================================
 with tabs[0]:
     st.markdown('<div class="section-heading">Key Performance Indicators</div>', unsafe_allow_html=True)
 
@@ -632,7 +632,7 @@ with tabs[0]:
             color="health_tier", color_discrete_map=HEALTH_COLORS,
             text=rev_by_tier["total_revenue"].apply(format_currency),
             template=PLOTLY_TEMPLATE,
-            labels={"health_tier": "Health Tier", "total_revenue": "Revenue (GBP )"},
+            labels={"health_tier": "Health Tier", "total_revenue": "Revenue (\u00a3)"},
         )
         fig.update_traces(textposition="outside")
         fig.update_layout(showlegend=False, margin=dict(t=10, b=10), height=320)
@@ -673,7 +673,7 @@ with tabs[0]:
             color="action_priority", color_discrete_map=PRIO_COLORS,
             text=rev_by_prio["total_revenue"].apply(format_currency),
             template=PLOTLY_TEMPLATE,
-            labels={"action_priority": "Action Priority", "total_revenue": "Revenue (GBP )"},
+            labels={"action_priority": "Action Priority", "total_revenue": "Revenue (\u00a3)"},
         )
         fig3.update_traces(textposition="outside")
         fig3.update_layout(showlegend=False, margin=dict(t=10, b=10), height=310)
@@ -732,23 +732,23 @@ with tabs[0]:
 
     insights = [
         f"Excellent and Healthy customers represent <b>{pct_rev_top:.1f}%</b> of revenue "
-        f"({format_currency(rev_excellent_healthy)})  -  protecting these accounts is the highest-priority action.",
+        f"({format_currency(rev_excellent_healthy)}) \u2014 protecting these accounts is the highest-priority action.",
         f"<b>{format_number(retention_count)}</b> customers ({pct_retention:.1f}%) are flagged as retention targets "
         f"based on churn risk, health tier, or RFM segment.",
         f"Priority 4 (Loyalty/Upsell) customers hold <b>{format_currency(p4_rev)}</b> "
-        f"({pct_p4:.1f}% of revenue)  -  the highest revenue concentration across action priorities.",
+        f"({pct_p4:.1f}% of revenue) \u2014 the highest revenue concentration across action priorities.",
         f"<b>{format_number(crit_high_count)}</b> customers are rated Critical or High churn risk "
         f"({pct_crit:.1f}% are in the Critical Risk tier alone).",
         f"<b>{format_number(not_scored_count)}</b> customers could not be scored by the churn model "
-        f"(entered during the prediction window)  -  their churn component uses a neutral baseline.",
+        f"(entered during the prediction window) \u2014 their churn component uses a neutral baseline.",
     ]
     for ins in insights:
         st.markdown(f'<div class="insight-box">{ins}</div>', unsafe_allow_html=True)
 
 
-# ------------------------------------------------------------------------------
-# TAB 2  -  CUSTOMER SEGMENTS
-# ------------------------------------------------------------------------------
+# ============================================================================
+# TAB 2 \u2014 CUSTOMER SEGMENTS
+# ============================================================================
 with tabs[1]:
     valid_segs = [s for s in RFM_SEG_ORDER if s in df["rfm_segment"].unique()]
 
@@ -787,7 +787,7 @@ with tabs[1]:
             orientation="h",
             text=seg_rev["total_revenue"].apply(format_currency),
             template=PLOTLY_TEMPLATE,
-            labels={"rfm_segment": "", "total_revenue": "Revenue (GBP )"},
+            labels={"rfm_segment": "", "total_revenue": "Revenue (\u00a3)"},
             color="rfm_segment",
             color_discrete_sequence=px.colors.qualitative.Set2,
         )
@@ -810,7 +810,7 @@ with tabs[1]:
             orientation="h",
             text=seg_avg["avg_revenue"].apply(format_currency),
             template=PLOTLY_TEMPLATE,
-            labels={"rfm_segment": "", "avg_revenue": "Avg Revenue (GBP )"},
+            labels={"rfm_segment": "", "avg_revenue": "Avg Revenue (\u00a3)"},
             color="avg_revenue",
             color_continuous_scale="Blues",
         )
@@ -895,9 +895,9 @@ with tabs[1]:
     )
 
 
-# ------------------------------------------------------------------------------
-# TAB 3  -  CHURN RISK & RETENTION
-# ------------------------------------------------------------------------------
+# ============================================================================
+# TAB 3 \u2014 CHURN RISK & RETENTION
+# ============================================================================
 with tabs[2]:
     st.markdown(
         '<div class="insight-box">Churn predictions are available only for customers eligible in the '
@@ -928,7 +928,7 @@ with tabs[2]:
             st.plotly_chart(fig_c1, use_container_width=True)
 
         with col_r:
-            st.markdown('<div class="section-heading">Churn Risk Tier  -  Customer Count</div>', unsafe_allow_html=True)
+            st.markdown('<div class="section-heading">Churn Risk Tier \u2014 Customer Count</div>', unsafe_allow_html=True)
             valid_churn_tiers = [t for t in CHURN_TIER_ORDER if t in df["churn_risk_tier"].unique()]
             churn_tier_cnt = (
                 df["churn_risk_tier"].value_counts()
@@ -950,7 +950,7 @@ with tabs[2]:
         col_l2, col_r2 = st.columns(2)
 
         with col_l2:
-            st.markdown('<div class="section-heading">Churn Risk Tier  -  Revenue at Stake</div>', unsafe_allow_html=True)
+            st.markdown('<div class="section-heading">Churn Risk Tier \u2014 Revenue at Stake</div>', unsafe_allow_html=True)
             churn_tier_rev = (
                 df.groupby("churn_risk_tier")["total_revenue"].sum()
                 .reindex(valid_churn_tiers, fill_value=0)
@@ -962,7 +962,7 @@ with tabs[2]:
                 color="churn_risk_tier", color_discrete_map=CHURN_COLORS,
                 text=churn_tier_rev["total_revenue"].apply(format_currency),
                 template=PLOTLY_TEMPLATE,
-                labels={"churn_risk_tier": "Risk Tier", "total_revenue": "Revenue (GBP )"},
+                labels={"churn_risk_tier": "Risk Tier", "total_revenue": "Revenue (\u00a3)"},
             )
             fig_c3.update_traces(textposition="outside")
             fig_c3.update_layout(showlegend=False, height=300, margin=dict(t=10, b=10))
@@ -1030,9 +1030,9 @@ with tabs[2]:
             st.plotly_chart(fig_fi, use_container_width=True)
 
 
-# ------------------------------------------------------------------------------
-# TAB 4  -  CUSTOMER LOOKUP
-# ------------------------------------------------------------------------------
+# ============================================================================
+# TAB 4 \u2014 CUSTOMER LOOKUP
+# ============================================================================
 with tabs[3]:
     st.markdown('<div class="section-heading">Customer 360 Profile Lookup</div>', unsafe_allow_html=True)
 
@@ -1172,9 +1172,9 @@ with tabs[3]:
         st.dataframe(detail_df, hide_index=True, use_container_width=True, height=360)
 
 
-# ------------------------------------------------------------------------------
-# TAB 5  -  REVENUE & PRODUCTS
-# ------------------------------------------------------------------------------
+# ============================================================================
+# TAB 5 \u2014 REVENUE & PRODUCTS
+# ============================================================================
 with tabs[4]:
     if txn_df is None:
         st.markdown(
@@ -1199,7 +1199,7 @@ with tabs[4]:
                 monthly_rev, x="invoice_yearmonth", y="revenue",
                 markers=True,
                 template=PLOTLY_TEMPLATE,
-                labels={"invoice_yearmonth": "Month", "revenue": "Revenue (GBP )"},
+                labels={"invoice_yearmonth": "Month", "revenue": "Revenue (\u00a3)"},
             )
             fig_t1.update_traces(line_color="#3b82f6", line_width=2)
             fig_t1.update_layout(height=310, margin=dict(t=10, b=10), xaxis_tickangle=-45)
@@ -1232,7 +1232,7 @@ with tabs[4]:
                 text=country_rev["revenue"].apply(format_currency),
                 color="revenue", color_continuous_scale="Blues",
                 template=PLOTLY_TEMPLATE,
-                labels={"country": "", "revenue": "Revenue (GBP )"},
+                labels={"country": "", "revenue": "Revenue (\u00a3)"},
             )
             fig_t3.update_traces(textposition="outside")
             fig_t3.update_layout(showlegend=False, coloraxis_showscale=False,
@@ -1254,7 +1254,7 @@ with tabs[4]:
                 text=prod_rev["revenue"].apply(format_currency),
                 color="revenue", color_continuous_scale="Greens",
                 template=PLOTLY_TEMPLATE,
-                labels={"description": "", "revenue": "Revenue (GBP )"},
+                labels={"description": "", "revenue": "Revenue (\u00a3)"},
             )
             fig_t4.update_traces(textposition="outside")
             fig_t4.update_layout(showlegend=False, coloraxis_showscale=False,
@@ -1275,16 +1275,16 @@ with tabs[4]:
             aov, x="invoice_yearmonth", y="avg_order_value",
             markers=True, template=PLOTLY_TEMPLATE,
             color_discrete_sequence=["#f59e0b"],
-            labels={"invoice_yearmonth": "Month", "avg_order_value": "Avg Order Value (GBP )"},
+            labels={"invoice_yearmonth": "Month", "avg_order_value": "Avg Order Value (\u00a3)"},
         )
         fig_t5.update_traces(line_width=2)
         fig_t5.update_layout(height=280, margin=dict(t=10, b=10), xaxis_tickangle=-45)
         st.plotly_chart(fig_t5, use_container_width=True)
 
 
-# ------------------------------------------------------------------------------
-# TAB 6  -  ACTION PLAN
-# ------------------------------------------------------------------------------
+# ============================================================================
+# TAB 6 \u2014 ACTION PLAN
+# ============================================================================
 with tabs[5]:
     col_l, col_r = st.columns(2)
 
@@ -1319,7 +1319,7 @@ with tabs[5]:
             color="action_priority", color_discrete_map=PRIO_COLORS,
             text=ap_rev["total_revenue"].apply(format_currency),
             template=PLOTLY_TEMPLATE,
-            labels={"action_priority": "Priority", "total_revenue": "Revenue (GBP )"},
+            labels={"action_priority": "Priority", "total_revenue": "Revenue (\u00a3)"},
         )
         fig_ap2.update_traces(textposition="outside")
         fig_ap2.update_layout(showlegend=False, height=300, margin=dict(t=10, b=10))
@@ -1341,7 +1341,7 @@ with tabs[5]:
             color="health_tier", color_discrete_map=HEALTH_COLORS,
             text=ret_rev["total_revenue"].apply(format_currency),
             template=PLOTLY_TEMPLATE,
-            labels={"health_tier": "Health Tier", "total_revenue": "Revenue (GBP )"},
+            labels={"health_tier": "Health Tier", "total_revenue": "Revenue (\u00a3)"},
         )
         fig_ap3.update_traces(textposition="outside")
         fig_ap3.update_layout(showlegend=False, height=300, margin=dict(t=10, b=10))
@@ -1362,7 +1362,7 @@ with tabs[5]:
             text=vip_rev["total_revenue"].apply(format_currency),
             color="total_revenue", color_continuous_scale="Blues",
             template=PLOTLY_TEMPLATE,
-            labels={"rfm_segment": "", "total_revenue": "Revenue (GBP )"},
+            labels={"rfm_segment": "", "total_revenue": "Revenue (\u00a3)"},
         )
         fig_ap4.update_traces(textposition="outside")
         fig_ap4.update_layout(showlegend=False, coloraxis_showscale=False,
@@ -1447,14 +1447,10 @@ with tabs[5]:
             mime="text/csv",
         )
 
-# ------------------------------------------------------------------------------
-# TAB 7  -  ABOUT PROJECT
-# ------------------------------------------------------------------------------
 
-# ============================================================
-# TAB 7  -  CX INTELLIGENCE
-# ============================================================
-
+# ============================================================================
+# TAB 7 \u2014 CX INTELLIGENCE
+# ============================================================================
 with tabs[6]:
 
     st.markdown(
@@ -1464,19 +1460,19 @@ with tabs[6]:
 
     st.markdown(
         """
-       <div style="
-    padding:18px;
-    border-radius:12px;
-    background:#111827;
-    border:1px solid #374151;
-    margin-bottom:20px;
-    color:#f9fafb;
-">
-        <h3 style="margin-top:0;color:#f9fafb;">Customer Experience Intelligence</h3>
-     <p style="margin-bottom:0;color:#d1d5db;">
-        Statistical and NLP analysis of public CFPB consumer complaints,
-        combined with product-level customer experience signals.
-        </p>
+        <div style="
+            padding:18px;
+            border-radius:12px;
+            background:#111827;
+            border:1px solid #374151;
+            margin-bottom:20px;
+            color:#f9fafb;
+        ">
+            <h3 style="margin-top:0;color:#f9fafb;">Customer Experience Intelligence</h3>
+            <p style="margin-bottom:0;color:#d1d5db;">
+                Statistical and NLP analysis of public CFPB consumer complaints,
+                combined with product-level customer experience signals.
+            </p>
         </div>
         """,
         unsafe_allow_html=True
@@ -1486,29 +1482,12 @@ with tabs[6]:
     # LOAD CX FILES
     # --------------------------------------------------------
 
-    cx_priority_path = (
-        ROOT / "reports/cx_nlp/cx_priority_scores.csv"
-    )
-
-    residual_path = (
-        ROOT / "reports/cx_statistics/product_theme_residuals.csv"
-    )
-
-    chi_path = (
-        ROOT / "reports/cx_statistics/theme_timeliness_chi_square.csv"
-    )
-
-    product_chi_path = (
-        ROOT / "reports/cx_statistics/product_theme_chi_square.csv"
-    )
-
-    response_ci_path = (
-        ROOT / "reports/cx_statistics/theme_response_rates_ci.csv"
-    )
-
-    product_response_path = (
-        ROOT / "reports/cx_statistics/product_response_performance.csv"
-    )
+    cx_priority_path = ROOT / "reports/cx_nlp/cx_priority_scores.csv"
+    residual_path = ROOT / "reports/cx_statistics/product_theme_residuals.csv"
+    chi_path = ROOT / "reports/cx_statistics/theme_timeliness_chi_square.csv"
+    product_chi_path = ROOT / "reports/cx_statistics/product_theme_chi_square.csv"
+    response_ci_path = ROOT / "reports/cx_statistics/theme_response_rates_ci.csv"
+    product_response_path = ROOT / "reports/cx_statistics/product_response_performance.csv"
 
     # --------------------------------------------------------
     # KPI CARDS
@@ -1516,64 +1495,26 @@ with tabs[6]:
 
     if cx_priority_path.exists():
 
-        cx_priority = pd.read_csv(
-            cx_priority_path
-        )
+        cx_priority = pd.read_csv(cx_priority_path)
 
-        total_complaints = int(
-            cx_priority["complaints"].sum()
-        )
-
-        high_priority = int(
-            (
-                cx_priority["priority_tier"]
-                == "High Priority"
-            ).sum()
-        )
-
-        top_theme = (
-            cx_priority
-            .sort_values(
-                "cx_priority_score",
-                ascending=False
-            )
-            .iloc[0]["theme"]
-        )
-
-        top_score = (
-            cx_priority
-            .sort_values(
-                "cx_priority_score",
-                ascending=False
-            )
-            .iloc[0]["cx_priority_score"]
-        )
+        total_complaints = int(cx_priority["complaints"].sum())
+        high_priority = int((cx_priority["priority_tier"] == "High Priority").sum())
+        top_theme = cx_priority.sort_values("cx_priority_score", ascending=False).iloc[0]["theme"]
+        top_score = cx_priority.sort_values("cx_priority_score", ascending=False).iloc[0]["cx_priority_score"]
 
         k1, k2, k3, k4 = st.columns(4)
 
         with k1:
-            st.metric(
-                "Complaint Records",
-                f"{total_complaints:,}"
-            )
+            st.metric("Complaint Records", f"{total_complaints:,}")
 
         with k2:
-            st.metric(
-                "High-Priority Themes",
-                high_priority
-            )
+            st.metric("High-Priority Themes", high_priority)
 
         with k3:
-            st.metric(
-                "Top CX Priority Score",
-                f"{top_score:.1f}"
-            )
+            st.metric("Top CX Priority Score", f"{top_score:.1f}")
 
         with k4:
-            st.metric(
-                "Highest-Priority Theme",
-                top_theme
-            )
+            st.metric("Highest-Priority Theme", top_theme)
 
         st.markdown("### CX Priority Ranking")
 
@@ -1601,36 +1542,18 @@ with tabs[6]:
             }
         )
 
-        priority_display["Negative Rate %"] = (
-            priority_display["Negative Rate %"]
-            .round(1)
-        )
+        priority_display["Negative Rate %"] = priority_display["Negative Rate %"].round(1)
+        priority_display["Timely Response %"] = priority_display["Timely Response %"].round(1)
+        priority_display["Priority Score"] = priority_display["Priority Score"].round(1)
 
-        priority_display["Timely Response %"] = (
-            priority_display["Timely Response %"]
-            .round(1)
-        )
-
-        priority_display["Priority Score"] = (
-            priority_display["Priority Score"]
-            .round(1)
-        )
-
-        st.dataframe(
-            priority_display,
-            hide_index=True,
-            use_container_width=True,
-        )
+        st.dataframe(priority_display, hide_index=True, use_container_width=True)
 
         # ----------------------------------------------------
         # PRIORITY CHART
         # ----------------------------------------------------
 
         fig_priority = px.bar(
-            cx_priority.sort_values(
-                "cx_priority_score",
-                ascending=True
-            ),
+            cx_priority.sort_values("cx_priority_score", ascending=True),
             x="cx_priority_score",
             y="theme",
             orientation="h",
@@ -1639,28 +1562,13 @@ with tabs[6]:
             template=PLOTLY_TEMPLATE,
         )
 
-        fig_priority.update_traces(
-            texttemplate="%{text:.1f}",
-            textposition="outside"
-        )
+        fig_priority.update_traces(texttemplate="%{text:.1f}", textposition="outside")
+        fig_priority.update_layout(height=450, xaxis_title="CX Priority Score", yaxis_title="")
 
-        fig_priority.update_layout(
-            height=450,
-            xaxis_title="CX Priority Score",
-            yaxis_title=""
-        )
-
-        st.plotly_chart(
-            fig_priority,
-            use_container_width=True
-        )
+        st.plotly_chart(fig_priority, use_container_width=True)
 
     else:
-
-        st.warning(
-            "CX priority results not found. "
-            "Run the CX NLP analysis first."
-        )
+        st.warning("CX priority results not found. Run the CX NLP analysis first.")
 
     # ========================================================
     # STATISTICAL EVIDENCE
@@ -1671,44 +1579,22 @@ with tabs[6]:
     col1, col2 = st.columns(2)
 
     # --------------------------------------------------------
-    # THEME x TIMELINESS
+    # THEME \u00d7 TIMELINESS
     # --------------------------------------------------------
 
     with col1:
-
         if chi_path.exists():
+            chi = pd.read_csv(chi_path).iloc[0]
 
-            chi = pd.read_csv(
-                chi_path
-            ).iloc[0]
-
-            st.markdown(
-                "#### CX Theme x Response Timeliness"
-            )
-
-            st.metric(
-                "Chi-square",
-                f"{chi['chi_square']:,.2f}"
-            )
-
-            st.metric(
-                "Cramer's V",
-                f"{chi['cramers_v']:.4f}"
-            )
+            st.markdown("#### CX Theme \u00d7 Response Timeliness")
+            st.metric("Chi-square", f"{chi['chi_square']:,.2f}")
+            st.metric("Cramer's V", f"{chi['cramers_v']:.4f}")
 
             p = chi["p_value"]
-
             if p < 0.001:
-
-                st.success(
-                    "Statistically significant (p < 0.001)"
-                )
-
+                st.success("Statistically significant (p < 0.001)")
             else:
-
-                st.info(
-                    f"p-value = {p:.4f}"
-                )
+                st.info(f"p-value = {p:.4f}")
 
             st.caption(
                 "The association is statistically significant, "
@@ -1716,44 +1602,22 @@ with tabs[6]:
             )
 
     # --------------------------------------------------------
-    # PRODUCT x THEME
+    # PRODUCT \u00d7 THEME
     # --------------------------------------------------------
 
     with col2:
-
         if product_chi_path.exists():
+            pchi = pd.read_csv(product_chi_path).iloc[0]
 
-            pchi = pd.read_csv(
-                product_chi_path
-            ).iloc[0]
-
-            st.markdown(
-                "#### Product x CX Theme"
-            )
-
-            st.metric(
-                "Chi-square",
-                f"{pchi['chi_square']:,.2f}"
-            )
-
-            st.metric(
-                "Cramer's V",
-                f"{pchi['cramers_v']:.4f}"
-            )
+            st.markdown("#### Product \u00d7 CX Theme")
+            st.metric("Chi-square", f"{pchi['chi_square']:,.2f}")
+            st.metric("Cramer's V", f"{pchi['cramers_v']:.4f}")
 
             p = pchi["p_value"]
-
             if p < 0.001:
-
-                st.success(
-                    "Statistically significant (p < 0.001)"
-                )
-
+                st.success("Statistically significant (p < 0.001)")
             else:
-
-                st.info(
-                    f"p-value = {p:.4f}"
-                )
+                st.info(f"p-value = {p:.4f}")
 
             st.caption(
                 "The moderate association indicates that "
@@ -1761,24 +1625,16 @@ with tabs[6]:
             )
 
     # ========================================================
-    # PRODUCT x THEME FRICTION
+    # PRODUCT \u00d7 THEME FRICTION
     # ========================================================
 
-    st.markdown(
-        "### Product-Specific CX Friction"
-    )
+    st.markdown("### Product-Specific CX Friction")
 
     if residual_path.exists():
+        residuals = pd.read_csv(residual_path)
 
-        residuals = pd.read_csv(
-            residual_path
-        )
-
-        friction = residuals[
-            residuals["residual"] >= 2
-        ].sort_values(
-            "residual",
-            ascending=False
+        friction = residuals[residuals["residual"] >= 2].sort_values(
+            "residual", ascending=False
         ).head(20)
 
         st.dataframe(
@@ -1807,61 +1663,37 @@ with tabs[6]:
         )
 
         # Heatmap using strongest relationships
-
         heatmap_data = friction.head(15).copy()
-
         heatmap = heatmap_data.pivot_table(
-            index="product",
-            columns="theme",
-            values="residual",
-            aggfunc="max",
-            fill_value=0
+            index="product", columns="theme", values="residual",
+            aggfunc="max", fill_value=0
         )
 
         fig_heatmap = px.imshow(
             heatmap,
             text_auto=".1f",
             aspect="auto",
-            title="Strong Product x CX Theme Associations",
+            title="Strong Product \u00d7 CX Theme Associations",
             template=PLOTLY_TEMPLATE,
         )
+        fig_heatmap.update_layout(height=550, xaxis_title="CX Theme", yaxis_title="Product")
 
-        fig_heatmap.update_layout(
-            height=550,
-            xaxis_title="CX Theme",
-            yaxis_title="Product"
-        )
-
-        st.plotly_chart(
-            fig_heatmap,
-            use_container_width=True
-        )
+        st.plotly_chart(fig_heatmap, use_container_width=True)
 
     else:
-
-        st.warning(
-            "Residual analysis file not found."
-        )
+        st.warning("Residual analysis file not found.")
 
     # ========================================================
     # RESPONSE PERFORMANCE
     # ========================================================
 
-    st.markdown(
-        "### Response Performance by CX Theme"
-    )
+    st.markdown("### Response Performance by CX Theme")
 
     if response_ci_path.exists():
-
-        response_ci = pd.read_csv(
-            response_ci_path
-        )
+        response_ci = pd.read_csv(response_ci_path)
 
         fig_response = px.bar(
-            response_ci.sort_values(
-                "not_timely_rate_pct",
-                ascending=False
-            ),
+            response_ci.sort_values("not_timely_rate_pct", ascending=False),
             x="not_timely_rate_pct",
             y="theme",
             orientation="h",
@@ -1869,22 +1701,10 @@ with tabs[6]:
             title="Non-Timely Response Rate by CX Theme",
             template=PLOTLY_TEMPLATE,
         )
+        fig_response.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
+        fig_response.update_layout(height=450, xaxis_title="Non-Timely Response Rate %", yaxis_title="")
 
-        fig_response.update_traces(
-            texttemplate="%{text:.1f}%",
-            textposition="outside"
-        )
-
-        fig_response.update_layout(
-            height=450,
-            xaxis_title="Non-Timely Response Rate %",
-            yaxis_title=""
-        )
-
-        st.plotly_chart(
-            fig_response,
-            use_container_width=True
-        )
+        st.plotly_chart(fig_response, use_container_width=True)
 
         st.dataframe(
             response_ci.rename(
@@ -1906,9 +1726,7 @@ with tabs[6]:
     # BUSINESS RECOMMENDATIONS
     # ========================================================
 
-    st.markdown(
-        "### Business Recommendations"
-    )
+    st.markdown("### Business Recommendations")
 
     recommendations = [
         (
@@ -1934,34 +1752,38 @@ with tabs[6]:
     ]
 
     for title, description in recommendations:
-
         st.markdown(
             f"""
-           <div style="
-    padding:14px;
-    margin-bottom:10px;
-    border-left:4px solid #2563eb;
-    background:#f8fafc;
-    color:#0f172a;
-    border-radius:6px;
-">
-    <strong style="color:#0f172a;">{title}</strong><br>
-    <span style="color:#334155;">{description}</span>
-</div>
+            <div style="
+                padding:14px;
+                margin-bottom:10px;
+                border-left:4px solid #2563eb;
+                background:#f8fafc;
+                color:#0f172a;
+                border-radius:6px;
+            ">
+                <strong style="color:#0f172a;">{title}</strong><br>
+                <span style="color:#334155;">{description}</span>
+            </div>
             """,
             unsafe_allow_html=True
         )
+
+
+# ============================================================================
+# TAB 8 \u2014 ABOUT PROJECT
+# ============================================================================
 with tabs[7]:
     # Project overview card
     st.markdown(f"""
     <div style="background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 100%);
                 border-radius:12px;padding:28px 32px;margin-bottom:24px;color:white">
         <div style="font-size:1.4rem;font-weight:700;margin-bottom:6px">
-            CustoraIQ - Customer & CX Intelligence Platform
+            CustoraIQ \u2014 Customer &amp; CX Intelligence Platform
         </div>
         <div style="font-size:0.88rem;color:#bfdbfe;margin-bottom:14px">
-            Customer Segmentation &nbsp; | &nbsp; Churn Prediction &nbsp; | &nbsp;
-            Health Scoring &nbsp; | &nbsp; Revenue Action Planning
+            Customer Segmentation &nbsp;\u00b7&nbsp; Churn Prediction &nbsp;\u00b7&nbsp;
+            Health Scoring &nbsp;\u00b7&nbsp; Revenue Action Planning
         </div>
         <div style="font-size:0.92rem;color:#e0f2fe;line-height:1.7;margin-bottom:16px">
             This project analyses customer transaction behaviour, segments customers using
@@ -1972,7 +1794,7 @@ with tabs[7]:
         <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:14px;
                     font-size:0.82rem;color:#93c5fd">
             Built by <strong style="color:white">{DEV_NAME}</strong>
-            &nbsp; - &nbsp; {DEV_ROLE}
+            &nbsp;\u2014&nbsp; {DEV_ROLE}
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -1981,9 +1803,9 @@ with tabs[7]:
     st.markdown('<div class="section-heading">Connect</div>', unsafe_allow_html=True)
     cc1, cc2, cc3, _pad = st.columns([1, 1, 1, 1])
     for col, icon, title, label, href in [
-        (cc1, "", "LinkedIn", "linkedin.com/in/tejas-jadhav", DEV_LINKEDIN),
-        (cc2, "", "GitHub", "github.com/tejasjd69", DEV_GITHUB),
-        (cc3, "", "Portfolio", "github.com/tejasjd69", DEV_PORTFOLIO),
+        (cc1, "\U0001F4BC", "LinkedIn", "linkedin.com/in/tejas-jadhav", DEV_LINKEDIN),
+        (cc2, "\U0001F419", "GitHub", "github.com/tejasjd69", DEV_GITHUB),
+        (cc3, "\U0001F310", "Portfolio", "github.com/tejasjd69", DEV_PORTFOLIO),
     ]:
         with col:
             st.markdown(f"""
@@ -2004,9 +1826,9 @@ with tabs[7]:
         ("Data Cleaning & Feature Engineering",
          "Built 27 customer-level features: recency, frequency, monetary, returns, engagement, and tenure metrics."),
         ("EDA & Revenue Analysis",
-         "Identified that 72.4% repeat buyers drive 96.8% of revenue. Peak month: Nov 2010 (GBP 1.17M)."),
+         "Identified that 72.4% repeat buyers drive 96.8% of revenue. Peak month: Nov 2010 (\u00a31.17M)."),
         ("RFM Segmentation",
-         "Assigned R/F/M scores (1-5) and mapped customers to 10 business segments including Champions and Hibernating."),
+         "Assigned R/F/M scores (1\u20135) and mapped customers to 10 business segments including Champions and Hibernating."),
         ("Churn Labelling",
          "Time-window methodology: observation cutoff 2011-07-01. Near-perfect 50/50 churn balance (no SMOTE needed)."),
         ("Churn Model Training",
@@ -2014,16 +1836,18 @@ with tabs[7]:
         ("SHAP Explainability",
          "SHAP LinearExplainer on 1,000-row sample. Top drivers: recency, unique purchase days, RFM score."),
         ("Customer Health Score",
-         "4-component score (0-100): RFM 40pt  |  Churn Safety 30pt  |  Revenue 20pt  |  Engagement 10pt."),
+         "4-component score (0\u2013100): RFM 40pt \u00b7 Churn Safety 30pt \u00b7 Revenue 20pt \u00b7 Engagement 10pt."),
         ("Customer 360 Table",
          "5,878-customer master table with health tier, action priority, VIP flag, and retention target flag."),
+        ("CX Intelligence Layer",
+         "NLP and statistical analysis of 30,000+ CFPB complaints across 14 products and 8 CX themes."),
         ("Interactive Dashboard",
-         "Streamlit dashboard with 7 tabs, sidebar filters, KPI cards, 20+ Plotly charts, and CSV exports."),
+         "Streamlit dashboard with 8 tabs, sidebar filters, KPI cards, 20+ Plotly charts, and CSV exports."),
     ]
     for i, (step_title, step_desc) in enumerate(steps, 1):
         st.markdown(
             f'<div class="insight-box" style="margin-bottom:6px">'
-            f'<b>Step {i:02d}  -  {step_title}</b><br>'
+            f'<b>Step {i:02d} \u2014 {step_title}</b><br>'
             f'<span style="color:#374151">{step_desc}</span>'
             f'</div>',
             unsafe_allow_html=True,
@@ -2034,9 +1858,8 @@ with tabs[7]:
     # Dataset, currency, and disclaimer notes
     st.markdown('<div class="section-heading">Notes & Disclaimer</div>', unsafe_allow_html=True)
     for note in [
-        "Dataset: UCI Online Retail II  -  historical transaction data from a UK-based online retailer (Dec 2009 - Dec 2011).",
-        "All monetary values are shown in GBP (GBP ). Country filters customer location only and do not change transaction currency.",
-     
+        "Dataset: UCI Online Retail II \u2014 historical transaction data from a UK-based online retailer (Dec 2009 \u2013 Dec 2011).",
+        "All monetary values are shown in GBP (\u00a3). Country filters customer location only and do not change transaction currency.",
     ]:
         st.markdown(
             f'<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;'
@@ -2046,5 +1869,19 @@ with tabs[7]:
         )
 
 
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
+# ============================================================================
+# FOOTER
+# ============================================================================
+st.markdown(f"""
+<div class="site-footer">
+    <div class="footer-name">{DEV_NAME}</div>
+    <div class="footer-links">
+        <a class="footer-link" href="{DEV_GITHUB}" target="_blank">GitHub</a>
+        <a class="footer-link" href="{DEV_LINKEDIN}" target="_blank">LinkedIn</a>
+        <a class="footer-link" href="{DEV_PORTFOLIO}" target="_blank">Portfolio</a>
+    </div>
+    <div class="footer-note">
+        Built and maintained by {DEV_NAME}. Portfolio project for demonstration purposes.
+    </div>
+</div>
+""", unsafe_allow_html=True)
